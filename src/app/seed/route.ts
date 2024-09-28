@@ -1,12 +1,4 @@
-import { sql } from '@../../../db/db';
- 
-export const dynamic = 'force-dynamic';
- 
-export async function GET() {
-  await sql.query(`INSERT INTO users (name) VALUES ('John Doe');`);
-  return Response.json({ success: true });
-}
-
+// import { sql } from '@../../../db/db';
 // import bcrypt from 'bcrypt';
 // import pg from 'pg';
 // const { Client } = require('pg');

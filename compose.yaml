@@ -11,7 +11,6 @@ services:
   server:
     build:
       context: .
-      target: dev
     ports:
       - 3000:3000
       - 9229:9229
@@ -19,10 +18,8 @@ services:
       NODE_ENV: production
       POSTGRES_HOST: db
       POSTGRES_USER: postgres
-      # POSTGRES_PASSWORD_FILE: /app/db/password.txt
       POSTGRES_PASSWORD_FILE: /run/secrets/db-password
       POSTGRES_DB: example
-
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
@@ -35,6 +32,8 @@ services:
         condition: service_healthy
     secrets:
       - db-password
+    volumes:
+      - ./src:/usr/src/app/src
   db:
     image: postgres
     restart: always
@@ -58,6 +57,7 @@ services:
 
   pg_proxy:
     image: ghcr.io/neondatabase/wsproxy:latest
+    platform: linux/amd64
     environment:
       APPEND_PORT: 'db:5432'
       ALLOW_ADDR_REGEX: '.*'
@@ -68,7 +68,6 @@ services:
       - '54330:80'
     depends_on:
       - db
-
 volumes:
   db-data:
 secrets:
